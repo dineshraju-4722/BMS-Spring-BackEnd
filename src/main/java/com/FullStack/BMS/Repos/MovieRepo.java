@@ -18,6 +18,8 @@ public interface MovieRepo extends JpaRepository<MovieEntity, Integer> {
 			""", nativeQuery = true)
 	List<JoinsDto> getMovieAndLanguagePairs(@Param("language") String language);
 	
+	
+	MovieEntity findByTitleIgnoreCase(@Param("movie") String movie);
 //	@Query(value = """
 //			SELECT m.*
 //			FROM movies m

@@ -1,10 +1,12 @@
 package com.FullStack.BMS.Controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +33,15 @@ public class MovieController {
 	public void postingmovie(@RequestBody PostMovieDto body) {
 		movieserv.postsmovie(body);
 	}
-
+ @GetMapping("/getmovie/{movie}")
+ public MovieEntity gettingmoviebytitle(@PathVariable("movie") String movie) {
+	 return movieserv.getsmoviebytitle(movie);
+ }
+	@GetMapping("/getmoviesbylanguages")
+	public Map<String, List<String>> gettingmoviesbylanguages(){
+		return movieserv.getsmoviesbylanguages();
+	}
+	
 	@GetMapping("/getlanguages")
 	public List<LanguageEntity> gettinglanguage() {
 		return movieserv.getslanguages();

@@ -42,4 +42,8 @@ public class TheatreService {
 return theatresrepo.findAll();
 		}
 
+	public List<TheatresEntity> getstheatresbylocation(String location) {
+		return theatresrepo.findByLocation_LocationIgnoreCase(location);
+	}
+
 }

@@ -54,7 +54,7 @@ public class ShowsService {
 			int id=show.getMovie().getId();
 			uniqueshows.putIfAbsent(id, show);
 		}
-		return new ArrayList<>(uniqueshows.values());
+		return new ArrayList<>(uniqueshows.values()); 
 	}
 
 }
