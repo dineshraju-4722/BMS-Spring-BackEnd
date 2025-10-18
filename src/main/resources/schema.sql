@@ -18,4 +18,4 @@ create table if not exists locations (id serial primary key,location varchar(40)
 create table if not exists theatres (id serial primary key,columns int,name varchar(30) unique,rows int,totalseats int,location int references locations(id) on delete cascade);
 create table if not exists seats(id serial primary key,seat_number int unique);
 create table if not exists shows (id serial primary key,date date,name varchar(20),language varchar(20),time time , movie int references movies(id) on delete cascade, theatre int references theatres(id) on delete cascade,unique(date,time,theatre));
-create table if not exists show_seats (show_id int references shows(id),seat_id int references seats(id));
+create table if not exists show_seats (show_id int references shows(id),seat_id int references seats(id), primary key (show_id,seat_id));

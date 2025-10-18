@@ -19,7 +19,7 @@ INSERT INTO seats (seat_number)
 SELECT generate_series(1, 1000) on conflict(seat_number) do nothing;
 
 
-insert into show_seats values (1,1);
-insert into show_seats values (1,4);
-insert into show_seats values (1,7);
+insert into show_seats values (1,1) on  conflict(show_id,seat_id) do nothing;
+insert into show_seats values (1,4) on conflict(show_id,seat_id) do nothing;
+insert into show_seats values (1,7) on conflict(show_id,seat_id) do nothing;
 

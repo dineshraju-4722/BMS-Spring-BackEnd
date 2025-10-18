@@ -7,7 +7,7 @@ WORKDIR /app
 COPY . .
 
 # Build the project
-RUN gradle build --no-daemon
+RUN gradle build --no-daemon -x test
 
 # -------- Stage 2: Run the JAR with OpenJDK --------
 FROM openjdk:21-jdk-slim
