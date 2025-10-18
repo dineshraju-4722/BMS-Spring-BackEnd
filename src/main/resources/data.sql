@@ -15,3 +15,6 @@ insert into movie_language (movieid,languageid) values (1,2),(1,8) on conflict (
 insert into locations (location) values ('Penumur'),('Chittoor'),('Tirupathi') on conflict (location) do nothing;
 insert into theatres (columns,name,rows,totalseats,location) values(19,'Sv Talkies',19,10,1) on conflict (name) do nothing;
 INSERT INTO shows (date, name, language, time, movie, theatre) VALUES ('2025-11-11', 'Noon', 'Telugu', '18:25:00', 1, 1) on conflict(date,time,theatre) do nothing;
+INSERT INTO seats (seat_number)
+SELECT generate_series(1, 1000) on conflict(seat_number) do nothing;
+

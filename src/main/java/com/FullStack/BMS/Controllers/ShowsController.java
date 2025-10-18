@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.FullStack.BMS.Dto.PostSeatDto;
 import com.FullStack.BMS.Dto.PostShowDto;
 import com.FullStack.BMS.Dto.ShowsBytheatreAndLocation;
 import com.FullStack.BMS.Entities.ShowsEntity;
@@ -27,6 +28,11 @@ public class ShowsController {
 	@PostMapping("/postshow")
 	public void postingshow(@RequestBody PostShowDto body) {
 		showsserv.postsshow(body);
+	}
+	
+	@GetMapping("/getshow/{id}")
+	public ShowsEntity gettingshow(@PathVariable("id") int id) {
+		return showsserv.getsshow(id);
 	}
 
 	@GetMapping("/getshows/home/{location}/{date}")
@@ -52,27 +58,33 @@ public class ShowsController {
 		}
 		return null;
 	}
+
 	@GetMapping("/getshows/searchbygenre/{location}/{genre}")
-	public List<ShowsEntity> gettingshowsbyGenreAndLocation(@PathVariable("location") String location,@PathVariable("genre") String genre){
-		return showsserv.getsshowsbygenre(location,genre);
+	public List<ShowsEntity> gettingshowsbyGenreAndLocation(@PathVariable("location") String location,
+			@PathVariable("genre") String genre) {
+		return showsserv.getsshowsbygenre(location, genre);
 	}
-	
+
 	@GetMapping("/getshows/searchbylanguage/{location}/{language}")
-	public List<ShowsEntity> gettingshowsbyLanguageAndLocation(@PathVariable("location") String location,@PathVariable("language") String language){
-		return showsserv.getsshowsbylanguage(location,language);
+	public List<ShowsEntity> gettingshowsbyLanguageAndLocation(@PathVariable("location") String location,
+			@PathVariable("language") String language) {
+		return showsserv.getsshowsbylanguage(location, language);
+	}
+
+	@GetMapping("/getshows/searchbytype/{location}/{type}")
+	public List<ShowsEntity> gettingshowsbyTypeAndLocation(@PathVariable("location") String location,
+			@PathVariable("type") String type) {
+		return showsserv.getsshowsbytype(location, type);
+	}
+
+	@PostMapping("/postseats")
+	public void postingseat(@RequestBody PostSeatDto body) {
+		showsserv.postsseat(body);
 	}
 	
-	@GetMapping("/getshows/searchbytype/{location}/{type}")
-	public List<ShowsEntity> gettingshowsbyTypeAndLocation(@PathVariable("location") String location,@PathVariable("type") String type){
-		return showsserv.getsshowsbytype(location,type);
+	@GetMapping("/getseats/{showid}")
+	public List<Integer> gettingseats(@PathVariable("showid") int showid) {
+		return showsserv.getsseats(showid);
 	}
+	
 }
-
-
-
-
-
-
-
-
-

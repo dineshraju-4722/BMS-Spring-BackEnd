@@ -3,19 +3,24 @@ package com.FullStack.BMS.Service;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.FullStack.BMS.Dto.PostSeatDto;
 import com.FullStack.BMS.Dto.PostShowDto;
 import com.FullStack.BMS.Dto.ShowsBytheatreAndLocation;
 import com.FullStack.BMS.Entities.MovieEntity;
+import com.FullStack.BMS.Entities.Seats;
 import com.FullStack.BMS.Entities.ShowsEntity;
 import com.FullStack.BMS.Entities.TheatresEntity;
 import com.FullStack.BMS.Repos.MovieRepo;
+import com.FullStack.BMS.Repos.SeatsRepo;
 import com.FullStack.BMS.Repos.ShowsRepo;
 import com.FullStack.BMS.Repos.TheatresRepo;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -32,6 +37,8 @@ public class ShowsService {
 	private MovieRepo movierepo;
 	@Autowired
 	private TheatresRepo theatresrepo;
+	@Autowired
+	private SeatsRepo seatsrepo;
 	@Autowired
 	private ObjectMapper objectMapper;
 
@@ -68,7 +75,7 @@ public class ShowsService {
 	public List<ShowsEntity> getsshowsbylocationanddate(String location, Date date) {
 		return uniqueshowsWithLocation(location);
 	}
-	
+
 	public Map<String, List<ShowsBytheatreAndLocation>> getshowsbythestres(String location, String movie, Date date)
 			throws JsonProcessingException {
 		// TODO Auto-generated method stub
@@ -78,24 +85,48 @@ public class ShowsService {
 		};
 		return objectMapper.readValue(showsWithTheatresAndLocations, typeRef);
 	}
-	
-	public List<ShowsEntity> getsshowsbygenre(String location, String genre){
+
+	public List<ShowsEntity> getsshowsbygenre(String location, String genre) {
 		List<ShowsEntity> uniqueshowsbyLocation = uniqueshowsWithLocation(location);
-		List<ShowsEntity> aa=uniqueshowsbyLocation.stream().filter(e->e.getMovie().getMoviegenre().stream().anyMatch(w->w.getGenre().equalsIgnoreCase(genre))).collect(Collectors.toList());
+		List<ShowsEntity> aa = uniqueshowsbyLocation.stream()
+				.filter(e -> e.getMovie().getMoviegenre().stream().anyMatch(w -> w.getGenre().equalsIgnoreCase(genre)))
+				.collect(Collectors.toList());
 		return aa;
 	}
 
-	
 	public List<ShowsEntity> getsshowsbylanguage(String location, String language) {
 		List<ShowsEntity> uniqueshowsbyLanguage = uniqueshowsWithLocation(location);
-		List<ShowsEntity> aa=uniqueshowsbyLanguage.stream().filter(e->e.getMovie().getMovielang().stream().anyMatch(w->w.getLanguage().equalsIgnoreCase(language))).collect(Collectors.toList());
+		List<ShowsEntity> aa = uniqueshowsbyLanguage.stream().filter(
+				e -> e.getMovie().getMovielang().stream().anyMatch(w -> w.getLanguage().equalsIgnoreCase(language)))
+				.collect(Collectors.toList());
 		return aa;
 	}
 
 	public List<ShowsEntity> getsshowsbytype(String location, String type) {
 		List<ShowsEntity> uniqueshowsbyType = uniqueshowsWithLocation(location);
-		List<ShowsEntity> aa=uniqueshowsbyType.stream().filter(e->e.getMovie().getMovietype().stream().anyMatch(w->w.getType().equalsIgnoreCase(type))).collect(Collectors.toList());
+		List<ShowsEntity> aa = uniqueshowsbyType.stream()
+				.filter(e -> e.getMovie().getMovietype().stream().anyMatch(w -> w.getType().equalsIgnoreCase(type)))
+				.collect(Collectors.toList());
 		return aa;
+	}
+
+	public ShowsEntity getsshow(int id) {
+		return showsrepo.findById(id).orElse(null);
+	}
+
+	public void postsseat(PostSeatDto body) {
+		ShowsEntity show = getsshow(body.getId());
+		Set<Seats> sts = new HashSet<>(seatsrepo.findAllById(body.getSeats()));
+		Set<Seats> seats = show.getSeats();
+		seats.addAll(sts);
+		show.setSeats(seats);
+		showsrepo.save(show);
+
+	}
+
+	public List<Integer> getsseats(int showid) {
+		ShowsEntity show = getsshow(showid);
+		return show.getSeats().stream().map(e -> e.getId()).collect(Collectors.toList());
 	}
 
 }

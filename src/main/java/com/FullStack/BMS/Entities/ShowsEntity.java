@@ -2,37 +2,33 @@ package com.FullStack.BMS.Entities;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "shows")
-public class ShowsEntity {
-	public ShowsEntity(int id, String name, String language, Time time, Date date, TheatresEntity thetare,
-			MovieEntity movie) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.language = language;
-		this.time = time;
-		this.date = date;
-		this.thetare = thetare;
-		this.movie = movie;
-	}
 
-	public ShowsEntity() {
-		super();
-	}
+@Table(name = "shows", uniqueConstraints = @UniqueConstraint(columnNames = { "date", "time", "theatre" }))
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
+public class ShowsEntity {
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,6 +38,7 @@ public class ShowsEntity {
 	private String language;
 	private Time time;
 	private Date date;
+
 	@ManyToOne
 	@JoinColumn(name = "theatre", nullable = false)
 	private TheatresEntity thetare;
@@ -50,60 +47,8 @@ public class ShowsEntity {
 	@JoinColumn(name = "movie", nullable = false)
 	private MovieEntity movie;
 
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Date getDate() {
-		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
-	}
-
-	public MovieEntity getMovie() {
-		return movie;
-	}
-
-	public void setMovie(MovieEntity movie) {
-		this.movie = movie;
-	}
-
-	public String getLanguage() {
-		return language;
-	}
-
-	public void setLanguage(String language) {
-		this.language = language;
-	}
-
-	public Time getTime() {
-		return time;
-	}
-
-	public void setTime(Time time) {
-		this.time = time;
-	}
-
-	public TheatresEntity getThetare() {
-		return thetare;
-	}
-
-	public void setThetare(TheatresEntity thetare) {
-		this.thetare = thetare;
-	}
-
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "show_seats", joinColumns = @JoinColumn(name = "show_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "seat_id", referencedColumnName = "id"))
+	@JsonManagedReference
+	private Set<Seats> seats;
 }
