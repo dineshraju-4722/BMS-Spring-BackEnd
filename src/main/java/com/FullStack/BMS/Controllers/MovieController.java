@@ -18,7 +18,7 @@ import com.FullStack.BMS.Entities.LanguageEntity;
 import com.FullStack.BMS.Entities.MovieEntity;
 import com.FullStack.BMS.Entities.TypeEntity;
 import com.FullStack.BMS.Service.MovieService;
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 public class MovieController {
 	@Autowired

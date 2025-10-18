@@ -18,3 +18,8 @@ INSERT INTO shows (date, name, language, time, movie, theatre) VALUES ('2025-11-
 INSERT INTO seats (seat_number)
 SELECT generate_series(1, 1000) on conflict(seat_number) do nothing;
 
+
+insert into show_seats values (1,1);
+insert into show_seats values (1,4);
+insert into show_seats values (1,7);
+

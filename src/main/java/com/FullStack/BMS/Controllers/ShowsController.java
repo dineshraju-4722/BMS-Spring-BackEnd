@@ -19,7 +19,7 @@ import com.FullStack.BMS.Entities.ShowsEntity;
 import com.FullStack.BMS.Service.ShowsService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 public class ShowsController {
 	@Autowired

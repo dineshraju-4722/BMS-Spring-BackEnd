@@ -14,7 +14,7 @@ import com.FullStack.BMS.Dto.PostTheatreDto;
 import com.FullStack.BMS.Entities.LocationsEntity;
 import com.FullStack.BMS.Entities.TheatresEntity;
 import com.FullStack.BMS.Service.TheatreService;
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "*")
 @RestController
 public class TheatreController {
 
